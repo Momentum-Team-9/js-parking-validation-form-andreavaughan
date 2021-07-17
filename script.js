@@ -65,11 +65,38 @@ function validateCarMake(){
     }
 }
 
+const daysField = document.getElementById('days')
+
+function validateDaysField(){
+    const error = document.createElement('div')
+    if (document.getElementById('days')){
+        if (daysField.value === '' || daysField.value == null){
+            return
+        } else if (daysField.value < 1 || daysField.value > 30){
+            error.id = 'daysfield-number-message'
+            document.getElementById('days-field').appendChild(error).innerText  = 'Must be for between 1-30 days'
+            document.getElementById('daysfield-message').remove()
+        } else document.getElementById('daysfield-message').remove()
+    } else if (document.getElementById('daysfield-number-message')){
+        if (daysField.value < 1 || daysField.value > 30){
+            return
+        } else document.getElementById('daysfield-number-message').remove()
+    } else if (daysField.value === '' || carField.value == null){
+        error.id = 'daysfield-message'
+        document.getElementById('days-field').appendChild(error).innerText  = 'Number of days is required'
+        console.log(daysField.value)
+    } else if (daysField.value < 1 || daysField.value > 30){
+        error.id = 'daysfield-number-message'
+        document.getElementById('days-field').appendChild(error).innerText  = 'Must be for between 1-30 days'
+    }
+}
+
 form.addEventListener('submit', function(event){
     event.preventDefault()
     validateNameInput()
     validateCarYear()
     // validateCarMake()
+    validateDaysField()
 
     
     console.log('form submit attempted')
