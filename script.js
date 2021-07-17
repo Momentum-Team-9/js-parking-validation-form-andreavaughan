@@ -32,13 +32,24 @@ function validateNameInput(){
 const carYear = document.getElementById('car-year')
 
 function validateCarYear(){
-    if (carYear.value === '' || carYear.value == null ){
-        const error = document.createElement('div')
+    const error = document.createElement('div')
+    if (document.getElementById('caryear-message')){
+        if (carYear.value === '' || carYear.value == null){
+            return
+        } else if (carYear.value < 1990 || carYear.value > 2022){
+            error.id = 'caryear-number-message'
+            document.getElementById('car-year-div').appendChild(error).innerText  = 'Must be a valid model year'
+            document.getElementById('caryear-message').remove()
+        } else document.getElementById('caryear-message').remove()
+    } else if (document.getElementById('caryear-number-message')){
+        if (carYear.value < 1990 || carYear.value > 2022){
+            return
+        } else document.getElementById('caryear-number-message').remove()
+    } else if (carYear.value === '' || carYear.value == null){
         error.id = 'caryear-message'
         document.getElementById('car-year-div').appendChild(error).innerText  = 'Car year is required'
         console.log(carYear.value)
     } else if (carYear.value < 1990 || carYear.value > 2022){
-        const error = document.createElement('div')
         error.id = 'caryear-number-message'
         document.getElementById('car-year-div').appendChild(error).innerText  = 'Must be a valid model year'
     }
