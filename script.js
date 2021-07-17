@@ -69,7 +69,7 @@ const daysField = document.getElementById('days')
 
 function validateDaysField(){
     const error = document.createElement('div')
-    if (document.getElementById('days')){
+    if (document.getElementById('daysfield-message')){
         if (daysField.value === '' || daysField.value == null){
             return
         } else if (daysField.value < 1 || daysField.value > 30){
