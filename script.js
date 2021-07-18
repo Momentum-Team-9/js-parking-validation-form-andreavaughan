@@ -7,27 +7,19 @@ form.addEventListener('input', function(event){
     console.log('input captured')
 })
 
-// form.addEventListener('focus', function(event){
-//     // let foucusedElement = form.activeElement 
-//     if (focusedElement.innerText === '' || focusedElement.innerText == null) {
-//         const error = document.createElement('div')
-//         error.id = 'message'
-//         document.focusedElement.appendChild(error).innerText = 'Name is required'
-//         event.preventDefault()
-//     }
-// })
-
 function validateNameInput(){
     const error = document.createElement('div')
     if (document.getElementById('name-message')){
         if (nameInput.value === '' || nameInput.value == null){
-            return
-        } else document.getElementById('name-message').remove()
+            return false
+        } else document.getElementById('name-message').remove() 
+            return true
     } else if (nameInput.value === '' || nameInput.value == null ){
         error.id = 'name-message'
         error.className = 'input-invalid'
         document.getElementById('name-field').appendChild(error).innerText = 'Name is required' 
-     }
+        return false
+     } return true
 }
 
 const carYear = document.getElementById('car-year')
@@ -36,24 +28,28 @@ function validateCarYear(){
     const error = document.createElement('div')
     if (document.getElementById('caryear-message')){
         if (carYear.value === '' || carYear.value == null){
-            return
+            return false
         } else if (carYear.value < 1990 || carYear.value > 2022){
             error.id = 'caryear-number-message'
             document.getElementById('car-year-div').appendChild(error).innerText  = 'Must be a valid model year'
             document.getElementById('caryear-message').remove()
+            return false
         } else document.getElementById('caryear-message').remove()
+                return true
     } else if (document.getElementById('caryear-number-message')){
         if (carYear.value < 1990 || carYear.value > 2022){
-            return
+            return false
         } else document.getElementById('caryear-number-message').remove()
+                return true
     } else if (carYear.value === '' || carYear.value == null){
         error.id = 'caryear-message'
         document.getElementById('car-year-div').appendChild(error).innerText  = 'Car year is required'
-        console.log(carYear.value)
+        return false
     } else if (carYear.value < 1990 || carYear.value > 2022){
         error.id = 'caryear-number-message'
         document.getElementById('car-year-div').appendChild(error).innerText  = 'Must be a valid model year'
-    }
+        return false
+    } return true
 }
 
 const carMake = document.getElementById('car-make')
@@ -128,13 +124,26 @@ function validateCvvField(){
 }
 
 form.addEventListener('submit', function(event){
-    event.preventDefault()
     validateNameInput()
     validateCarYear()
     // validateCarMake()
     validateDaysField()
     validateCvvField()
 
-    
-    console.log('form submit attempted')
+    let formIsValid = validateForm() 
+    if (formIsValid == false){
+        event.preventDefault()
+        console.log('submit attempted')
+    } 
+    //else console.log('form submitted')
 })
+
+function validateForm() {
+    let nameIsValid = validateNameInput()
+    let carYearIsValid = validateCarYear()
+    console.log(nameIsValid) //create a variable for each validate function, add variable to this line
+    if (nameIsValid && carYearIsValid){
+        return true 
+    } else 
+        return false
+}

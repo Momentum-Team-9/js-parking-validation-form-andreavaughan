@@ -26,3 +26,13 @@ function showError() {
     } 
     nameInputError.className = 'input-invalid'
 }
+
+// form.addEventListener('focus', function(event){
+//     // let foucusedElement = form.activeElement 
+//     if (focusedElement.innerText === '' || focusedElement.innerText == null) {
+//         const error = document.createElement('div')
+//         error.id = 'message'
+//         document.focusedElement.appendChild(error).innerText = 'Name is required'
+//         event.preventDefault()
+//     }
+// })
