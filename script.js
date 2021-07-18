@@ -25,6 +25,7 @@ function validateNameInput(){
         } else document.getElementById('name-message').remove()
     } else if (nameInput.value === '' || nameInput.value == null ){
         error.id = 'name-message'
+        error.className = 'input-invalid'
         document.getElementById('name-field').appendChild(error).innerText = 'Name is required' 
      }
 }
@@ -81,7 +82,7 @@ function validateDaysField(){
         if (daysField.value < 1 || daysField.value > 30){
             return
         } else document.getElementById('daysfield-number-message').remove()
-    } else if (daysField.value === '' || carField.value == null){
+    } else if (daysField.value === '' || daysField.value == null){
         error.id = 'daysfield-message'
         document.getElementById('days-field').appendChild(error).innerText  = 'Number of days is required'
         console.log(daysField.value)
@@ -91,12 +92,48 @@ function validateDaysField(){
     }
 }
 
+const cvvField = document.getElementById('cvv')
+
+function validateCvvField(){
+    const error = document.createElement('div')
+    console.log(cvvField.value)
+    let regex = new RegExp('^[0-9][0-9][0-9]$')
+    console.log(regex.test(cvvField.value))
+    if (document.getElementById('cvvfield-message')){
+        if (cvvField.value === '' || cvvField.value == null){
+            return
+
+        } else if (regex.test(cvvField.value) == false){
+            error.id = 'cvvfield-number-message'
+            document.getElementById('cvv-field').appendChild(error).innerText  = 'Must be a valid CVV'
+            document.getElementById('cvvfield-message').remove()
+
+        } else document.getElementById('cvvfield-message').remove()
+
+    } else if (document.getElementById('cvvfield-number-message')){
+        if (regex.test(cvvField.value) == false){
+            return
+
+        } else document.getElementById('cvvfield-number-message').remove()
+
+    } else if (cvvField.value === '' || cvvField.value == null){
+        error.id = 'cvvfield-message'
+        document.getElementById('cvv-field').appendChild(error).innerText  = 'CVV is required'
+        console.log(cvvField.value)
+
+    } else if (regex.test(cvvField.value) == false){
+        error.id = 'cvvfield-number-message'
+        document.getElementById('cvv-field').appendChild(error).innerText  = 'CVV must be a 3-digit number'
+    }
+}
+
 form.addEventListener('submit', function(event){
     event.preventDefault()
     validateNameInput()
     validateCarYear()
     // validateCarMake()
     validateDaysField()
+    validateCvvField()
 
     
     console.log('form submit attempted')
