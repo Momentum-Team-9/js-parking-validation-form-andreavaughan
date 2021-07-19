@@ -55,11 +55,18 @@ function validateCarYear(){
 const carMake = document.getElementById('car-make')
 
 function validateCarMake(){
-    if (carMake.value === '' || carMake.value == null ){
-        const errorCarMake = document.createElement('div')
-        errorCarMake.id = 'carmake-message'
-        document.getElementById('car-make-div').appendChild(errorCarMake).innerText = 'Car make is required'
-    }
+    const error = document.createElement('div')
+    if (document.getElementById('car-make-message')){
+        if (nameInput.value === '' || nameInput.value == null){
+            return false
+        } else 
+            document.getElementById('car-make-message').remove() 
+            return true
+    } else if (nameInput.value === '' || nameInput.value == null ){
+        error.id = 'car-make-message'
+        document.getElementById('car-make-div').appendChild(error).innerText = 'Make is required' 
+        return false
+     } return true
 }
 
 const daysField = document.getElementById('days')
@@ -91,6 +98,47 @@ function validateDaysField(){
         document.getElementById('days-field').appendChild(error).innerText  = 'Must be for between 1-30 days'
         return false
     } return true
+}
+
+const creditCardField = document.getElementById('credit-card-field')
+
+function validateCardNumber(number) {
+    var regex = new RegExp("^[0-9]{16}$");
+    if (!regex.test(number))
+        return false;
+
+    return luhnCheck(number);
+}
+
+function luhnCheck(val) {
+    var sum = 0;
+    for (var i = 0; i < val.length; i++) {
+        var intVal = parseInt(val.substr(i, 1));
+        if (i % 2 == 0) {
+            intVal *= 2;
+            if (intVal > 9) {
+                intVal = 1 + (intVal % 10);
+            }
+        }
+        sum += intVal;
+    }
+    return (sum % 10) == 0;
+}
+
+function validateCreditCardField(){
+    const error=document.createElement('div')
+    let cardNumber = document.getElementById('credit-card')
+    if (document.getElementById('card-message')){
+        if (validateCardNumber(cardNumber.value) == false){
+            return false
+        } else 
+            document.getElementById('card-message').remove() 
+            return true
+    } else if (validateCardNumber(cardNumber.value) == false){
+        error.id = 'card-message'
+        document.getElementById('credit-card-field').appendChild(error).innerText = 'Must be a valid credit card number' 
+        return false
+    }
 }
 
 const cvvField = document.getElementById('cvv')
@@ -154,14 +202,57 @@ function changeCarYearErrorStyle() {
         carYearFieldId.setAttribute('class', "input-valid")
 }
 
+function changeCarMakeErrorStyle() {
+    let carMakeIsValid = validateCarMake()
+    let carMakeFieldId = document.getElementById('car-make-div')
+    if (carMakeIsValid == false){
+        carMakeFieldId.setAttribute('class', 'input-invalid')
+    } else 
+        carMakeFieldId.setAttribute('class', "input-valid")
+}
+
+function changeDaysFieldErrorStyle() {
+    let daysFieldIsValid = validateDaysField()
+    let daysFieldId = document.getElementById('days-field')
+    if (daysFieldIsValid == false){
+        daysFieldId.setAttribute('class', 'input-field input-invalid')
+    } else 
+        daysFieldId.setAttribute('class', "input-field input-valid")
+}
+
+function changeCreditCardFieldErrorStyle() {
+    let creditCardIsValid = validateCreditCardField()
+    let creditCardId = document.getElementById('credit-card-field')
+    if (creditCardIsValid == false){
+        creditCardId.setAttribute('class', 'input-field input-invalid')
+    } else 
+        creditCardId.setAttribute('class', "input-field input-valid")
+}
+
+function changeCvvFieldErrorStyle() {
+    let cvvFieldIsValid = validateCvvField()
+    let cvvFieldId = document.getElementById('cvv-field')
+    if (cvvFieldIsValid == false){
+        cvvFieldId.setAttribute('class', 'input-field input-invalid')
+    } else 
+        cvvFieldId.setAttribute('class', "input-field input-valid")
+}
+
+//This section checks for validation before allowing the form to submit
+
 form.addEventListener('submit', function(event){
     validateNameInput()
     changeNameErrorStyle()
     validateCarYear()
     changeCarYearErrorStyle()
-    // validateCarMake()
+    validateCarMake()
+    changeCarMakeErrorStyle()    
     validateDaysField()
+    changeDaysFieldErrorStyle()
+    validateCreditCardField()
+    changeCreditCardFieldErrorStyle()
     validateCvvField()
+    changeCvvFieldErrorStyle()
     event.preventDefault()
 
     let formIsValid = validateForm() 
@@ -174,15 +265,28 @@ form.addEventListener('submit', function(event){
 function validateForm() {
     let nameIsValid = validateNameInput()
     let carYearIsValid = validateCarYear()
+    let carMakeIsValid = validateCarMake()
     let daysFieldIsValid = validateDaysField()
+    let creditCardFieldIsValid = validateCreditCardField()
     let cvvFieldIsValid = validateCvvField()
     console.log(nameIsValid) 
     console.log(carYearIsValid)
     console.log(daysFieldIsValid)
     console.log(cvvFieldIsValid)
         //create a variable for each validate function, add variable to this line
-    if (nameIsValid && carYearIsValid && daysFieldIsValid && cvvFieldIsValid){
-        return true 
+    if (nameIsValid && carYearIsValid && carMakeIsValid && daysFieldIsValid && creditCardFieldIsValid && cvvFieldIsValid ){
+        showTotal()
+        return true
     } else 
         return false
+}
+
+function showTotal() {
+    let costFive = parseInt(daysField.value) * 5;
+    console.log(costFive)
+    if (validateDaysField()){
+        let daysTotal = document.createElement('div')
+        daysTotal.id = 'total'
+        document.getElementById('show-total').appendChild(daysTotal).innerText = `Your total is $${costFive}.00`
+    } 
 }
