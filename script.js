@@ -7,6 +7,8 @@ form.addEventListener('input', function(event){
     console.log('input captured')
 })
 
+//the following functions are to validate each form field 
+
 function validateNameInput(){
     const error = document.createElement('div')
     if (document.getElementById('name-message')){
@@ -57,14 +59,31 @@ const carMake = document.getElementById('car-make')
 function validateCarMake(){
     const error = document.createElement('div')
     if (document.getElementById('car-make-message')){
-        if (nameInput.value === '' || nameInput.value == null){
+        if (carMake.value === '' || carMake.value == null){
             return false
         } else 
             document.getElementById('car-make-message').remove() 
             return true
-    } else if (nameInput.value === '' || nameInput.value == null ){
+    } else if (carMake.value === '' || carMake.value == null ){
         error.id = 'car-make-message'
         document.getElementById('car-make-div').appendChild(error).innerText = 'Make is required' 
+        return false
+     } return true
+}
+
+const carModel = document.getElementById('car-make')
+
+function validateCarModel(){
+    const error = document.createElement('div')
+    if (document.getElementById('car-model-message')){
+        if (carModel.value === '' || carModel.value == null){
+            return false
+        } else 
+            document.getElementById('car-model-message').remove() 
+            return true
+    } else if (carModel.value === '' || carModel.value == null ){
+        error.id = 'car-model-message'
+        document.getElementById('car-model-div').appendChild(error).innerText = 'Model is required' 
         return false
      } return true
 }
@@ -211,6 +230,15 @@ function changeCarMakeErrorStyle() {
         carMakeFieldId.setAttribute('class', "input-valid")
 }
 
+function changeCarModelErrorStyle() {
+    let carModelIsValid = validateCarModel()
+    let carModelFieldId = document.getElementById('car-model-div')
+    if (carModelIsValid == false){
+        carModelFieldId.setAttribute('class', 'input-invalid')
+    } else 
+        carModelFieldId.setAttribute('class', "input-valid")
+}
+
 function changeDaysFieldErrorStyle() {
     let daysFieldIsValid = validateDaysField()
     let daysFieldId = document.getElementById('days-field')
@@ -246,7 +274,9 @@ form.addEventListener('submit', function(event){
     validateCarYear()
     changeCarYearErrorStyle()
     validateCarMake()
-    changeCarMakeErrorStyle()    
+    changeCarMakeErrorStyle()
+    validateCarModel()
+    changeCarModelErrorStyle()    
     validateDaysField()
     changeDaysFieldErrorStyle()
     validateCreditCardField()
@@ -266,6 +296,7 @@ function validateForm() {
     let nameIsValid = validateNameInput()
     let carYearIsValid = validateCarYear()
     let carMakeIsValid = validateCarMake()
+    let carModelIsValid = validateCarModel()
     let daysFieldIsValid = validateDaysField()
     let creditCardFieldIsValid = validateCreditCardField()
     let cvvFieldIsValid = validateCvvField()
@@ -274,7 +305,7 @@ function validateForm() {
     console.log(daysFieldIsValid)
     console.log(cvvFieldIsValid)
         //create a variable for each validate function, add variable to this line
-    if (nameIsValid && carYearIsValid && carMakeIsValid && daysFieldIsValid && creditCardFieldIsValid && cvvFieldIsValid ){
+    if (nameIsValid && carYearIsValid && carMakeIsValid && carModelIsValid && daysFieldIsValid && creditCardFieldIsValid && cvvFieldIsValid ){
         showTotal()
         return true
     } else 
